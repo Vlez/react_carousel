@@ -1,27 +1,30 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { run } from "holderjs/holder";
 
+const images = [
+  {
+    size: "67px400",
+    text: "Ejemplo 1",
+    bg: "1f5496",
+  },
+  {
+    size: "67px400",
+    text: "Ejemplo 2",
+    bg: "179e40",
+  },
+  {
+    size: "67px400",
+    text: "Ejemplo 3",
+    bg: "ba1f3b",
+  },
+];
+
 function App() {
-  const images = [
-    {
-      size: "67px400",
-      text: "Ejemplo 1",
-      bg: "1f5496",
-    },
-    {
-      size: "67px400",
-      text: "Ejemplo 2",
-      bg: "179e40",
-    },
-    {
-      size: "67px400",
-      text: "Ejemplo 3",
-      bg: "ba1f3b",
-    },
-  ];
   const [position, setPosition] = useState(0);
-  let url = `holder.js/${images[position].size}?text=${images[position].text}&bg=${images[position].bg}`;
+  const url = useRef(
+    `holder.js/${images[position].size}?text=${images[position].text}&bg=${images[position].bg}`
+  );
 
   useEffect(() => {
     run("image-class-name");
@@ -29,7 +32,7 @@ function App() {
 
   useEffect(() => {
     run("image-class-name");
-    url = `holder.js/${images[position].size}?text=${images[position].text}&bg=${images[position].bg}`;
+    url.current = `holder.js/${images[position].size}?text=${images[position].text}&bg=${images[position].bg}`;
     const timer = setTimeout(
       () =>
         position === images.length - 1
@@ -53,7 +56,7 @@ function App() {
         {" "}
         {`<`}{" "}
       </p>
-      <img className="image-class-name" data-src={url} alt="imagen" />
+      <img className="image-class-name" data-src={url.current} alt="imagen" />
       <p
         onClick={() =>
           position === images.length - 1
